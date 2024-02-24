@@ -1,0 +1,35 @@
+import 'dart:async';
+
+import 'package:flame/components.dart';
+import 'package:flame/game.dart';
+import 'package:sort_it_out/src/components/item.dart';
+
+import '../config.dart';
+import 'components/components.dart';
+
+class SortItOut extends FlameGame {
+  SortItOut()
+      : super(
+          camera: CameraComponent.withFixedResolution(
+            width: gameWidth,
+            height: gameHeight,
+          ),
+        );
+
+  double get width => size.x;
+  double get height => size.y;
+
+  @override
+  FutureOr<void> onLoad() async {
+    debugMode = true;
+    super.onLoad();
+
+    camera.viewfinder.anchor = Anchor.topLeft;
+
+    world.add(PlayArea());
+    world.add(Item(
+      position: Vector2(size.x / 2, 0),
+      currentVelocity: Vector2(0,100) 
+    ));
+  }
+}
