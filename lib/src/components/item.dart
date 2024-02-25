@@ -36,7 +36,6 @@ class Item extends CircleComponent with DragCallbacks, HasGameReference<SortItOu
     // TODO: implement onDragStart
     super.onDragStart(event);
     positionWhenDragged = Vector2.copy(position);
-    print('Previous Position: $positionWhenDragged');
     initialVelocity = currentVelocity;
     currentVelocity = Vector2(0, 0);
   }
@@ -52,7 +51,6 @@ class Item extends CircleComponent with DragCallbacks, HasGameReference<SortItOu
   void update(double dt) {
     super.update(dt);
     position += currentVelocity * dt;
-    print('Initial Position Value $positionWhenDragged');
   }
 }
 

@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:sort_it_out/src/components/item.dart';
+import 'package:sort_it_out/src/components/item_spawner.dart';
 
 import '../config.dart';
 import 'components/components.dart';
@@ -27,9 +29,11 @@ class SortItOut extends FlameGame {
     camera.viewfinder.anchor = Anchor.topLeft;
 
     world.add(PlayArea());
-    world.add(Item(
-      position: Vector2(size.x / 2, 0),
-      currentVelocity: Vector2(0,100) 
+    //world.add(Item(position: Vector2(size.x / 2, 0), currentVelocity: Vector2(0, 100)));
+    world.add(ItemSpawner(
+      components: [Item(position: Vector2(size.x / 2, 0), currentVelocity: Vector2(0, 100))],
+      minTimePeriod: 1,
+      maxTimePeriod: 3,
     ));
   }
 }
