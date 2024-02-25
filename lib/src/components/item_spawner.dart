@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
+import 'package:sort_it_out/config.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
 import 'package:sort_it_out/src/sort_it_out.dart';
@@ -13,11 +14,15 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
   final double maxTimePeriod;
   late Timer _timer;
   late double timerDuration;
+  final double minXPosition;
+  final double maxXPosition;
 
   ItemSpawner({
     required this.components,
     required this.minTimePeriod,
     required this.maxTimePeriod,
+    this.minXPosition = (gameWidth * 0.40),
+    this.maxXPosition = (gameWidth * 0.60),
   }) : super() {
     timerDuration = minTimePeriod;
 
@@ -48,7 +53,7 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
     Item newItemData = components.random();
     game.world.add(Item(
       currentVelocity: newItemData.currentVelocity,
-      position: newItemData.position,
+      position: Vector2(Random().nextDouble() * (maxXPosition - minXPosition) + minXPosition, 0),
       paint: newItemData.paint,
     ));
 
@@ -61,6 +66,5 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
       ..stop()
       ..limit = timerDuration
       ..start();
-    print('next timer Duration: $timerDuration');
   }
 }

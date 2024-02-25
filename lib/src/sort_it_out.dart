@@ -31,32 +31,34 @@ class SortItOut extends FlameGame {
 
     world.add(PlayArea());
     //world.add(Item(position: Vector2(size.x / 2, 0), currentVelocity: Vector2(0, 100)));
-    world.add(ItemSpawner(
-      components: [
-        Item(
-          position: Vector2(size.x / 2, 0),
-          currentVelocity: Vector2(0, 100),
-          paint: Paint()
-            ..color = Colors.blue
-            ..style = PaintingStyle.fill,
-        ),
-        Item(
-          position: Vector2(size.x / 2, 0),
-          currentVelocity: Vector2(0, 100),
-          paint: Paint()
-            ..color = Colors.green
-            ..style = PaintingStyle.fill,
-        ),
-        Item(
-          position: Vector2(size.x / 2, 0),
-          currentVelocity: Vector2(0, 100),
-          paint: Paint()
-            ..color = Colors.purple
-            ..style = PaintingStyle.fill,
-        )
-      ],
-      minTimePeriod: 1,
-      maxTimePeriod: 3,
-    ));
+    world.add(
+      ItemSpawner(
+        components: [
+          Item(
+            position: Vector2(size.x / 2, 0),
+            currentVelocity: Vector2(0, 100),
+            paint: Paint()
+              ..color = Colors.blue
+              ..style = PaintingStyle.fill,
+          ),
+          Item(
+            position: Vector2(size.x / 2, 0),
+            currentVelocity: Vector2(0, 100),
+            paint: Paint()
+              ..color = Colors.green
+              ..style = PaintingStyle.fill,
+          ),
+          Item(
+            position: Vector2(size.x / 2, 0),
+            currentVelocity: Vector2(0, 100),
+            paint: Paint()
+              ..color = Colors.purple
+              ..style = PaintingStyle.fill,
+          )
+        ],
+        minTimePeriod: 1,
+        maxTimePeriod: 3,
+      ),
+    );
   }
 }
