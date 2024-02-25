@@ -8,14 +8,14 @@ import '../../config.dart';
 class Item extends CircleComponent with DragCallbacks, HasGameReference<SortItOut> {
   Item({
     required this.currentVelocity,
-    this.itemSize = gameHeight * 0.035,
     required super.position,
+    required Paint paint,
+    this.itemSize = gameHeight * 0.035,
   }) : super(
-            radius: itemSize,
-            anchor: Anchor.center,
-            paint: Paint()
-              ..color = const Color(0xff1e6091)
-              ..style = PaintingStyle.fill);
+          radius: itemSize,
+          anchor: Anchor.center,
+          paint: paint
+        );
 
   Vector2 initialVelocity = Vector2.zero();
   Vector2 currentVelocity;
@@ -53,5 +53,3 @@ class Item extends CircleComponent with DragCallbacks, HasGameReference<SortItOu
     position += currentVelocity * dt;
   }
 }
-
-

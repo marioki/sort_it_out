@@ -2,12 +2,13 @@
 import 'dart:math';
 
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
 import 'package:sort_it_out/src/sort_it_out.dart';
 
 class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
-  final List<PositionComponent> components;
+  final List<Item> components;
   final double minTimePeriod;
   final double maxTimePeriod;
   late Timer _timer;
@@ -19,7 +20,7 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
     required this.maxTimePeriod,
   }) : super() {
     timerDuration = minTimePeriod;
-    
+
     _timer = Timer(
       timerDuration,
       repeat: true,
@@ -44,17 +45,22 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
   }
 
   void _spawnItem() {
-    game.world.add(Item(position: Vector2(game.size.x / 2, 0), currentVelocity: Vector2(0, 100)));
+    Item newItemData = components.random();
+    game.world.add(Item(
+      currentVelocity: newItemData.currentVelocity,
+      position: newItemData.position,
+      paint: newItemData.paint,
+    ));
 
     setTimerDuration();
   }
 
   void setTimerDuration() {
-    timerDuration = Random().nextDouble() * maxTimePeriod;
-    if (timerDuration < minTimePeriod) {
-      timerDuration = minTimePeriod;
-    }
-    _timer.limit = timerDuration;
+    timerDuration = Random().nextDouble() * (maxTimePeriod - minTimePeriod) + minTimePeriod;
+    _timer
+      ..stop()
+      ..limit = timerDuration
+      ..start();
     print('next timer Duration: $timerDuration');
   }
 }

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
 import 'package:sort_it_out/src/components/item.dart';
 import 'package:sort_it_out/src/components/item_spawner.dart';
 
@@ -31,7 +32,29 @@ class SortItOut extends FlameGame {
     world.add(PlayArea());
     //world.add(Item(position: Vector2(size.x / 2, 0), currentVelocity: Vector2(0, 100)));
     world.add(ItemSpawner(
-      components: [Item(position: Vector2(size.x / 2, 0), currentVelocity: Vector2(0, 100))],
+      components: [
+        Item(
+          position: Vector2(size.x / 2, 0),
+          currentVelocity: Vector2(0, 100),
+          paint: Paint()
+            ..color = Colors.blue
+            ..style = PaintingStyle.fill,
+        ),
+        Item(
+          position: Vector2(size.x / 2, 0),
+          currentVelocity: Vector2(0, 100),
+          paint: Paint()
+            ..color = Colors.green
+            ..style = PaintingStyle.fill,
+        ),
+        Item(
+          position: Vector2(size.x / 2, 0),
+          currentVelocity: Vector2(0, 100),
+          paint: Paint()
+            ..color = Colors.purple
+            ..style = PaintingStyle.fill,
+        )
+      ],
       minTimePeriod: 1,
       maxTimePeriod: 3,
     ));
