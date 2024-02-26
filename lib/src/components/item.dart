@@ -56,6 +56,10 @@ abstract class Item extends CircleComponent
   void update(double dt) {
     super.update(dt);
     position += currentVelocity * dt;
+    if (position.y > game.height) {
+      print('Deleting Object from memory');
+      removeFromParent();
+    }
   }
 
   @override
@@ -63,5 +67,11 @@ abstract class Item extends CircleComponent
     super.onCollision(intersectionPoints, other);
     _inCollisionWithType = other;
     print('COLLIDING WITH: $_inCollisionWithType');
+  }
+
+  @override
+  void onCollisionEnd(PositionComponent other) {
+    _inCollisionWithType = null;
+    super.onCollisionEnd(other);
   }
 }

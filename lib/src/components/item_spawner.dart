@@ -65,6 +65,7 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
 
   void setTimerDuration() {
     timerDuration = Random().nextDouble() * (maxTimePeriod - minTimePeriod) + minTimePeriod;
+
     _timer
       ..stop()
       ..limit = timerDuration

@@ -1,7 +1,7 @@
 import 'bin.dart';
 
-class PaperBin extends Bin {
-  PaperBin({
+class PlasticBin extends Bin {
+  PlasticBin({
     required super.label,
     required super.position,
     required super.paint,

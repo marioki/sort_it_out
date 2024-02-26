@@ -4,9 +4,13 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:sort_it_out/src/components/bins/bin.dart';
+import 'package:sort_it_out/src/components/bins/glass_bin.dart';
+import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 import 'package:sort_it_out/src/components/item_spawner.dart';
+import 'package:sort_it_out/src/components/items/glass_item.dart';
 import 'package:sort_it_out/src/components/items/paper_item.dart';
+import 'package:sort_it_out/src/components/items/plastic_bin.dart';
 
 import '../config.dart';
 import 'components/bins/paper_bin.dart';
@@ -33,7 +37,7 @@ class SortItOut extends FlameGame with HasCollisionDetection {
 
     world.add(PlayArea());
     world.addAll([
-      PaperBin(
+      GlassBin(
         label: 'Bin 1',
         position: Vector2(0, 0),
         size: Vector2(200, 250),
@@ -49,7 +53,7 @@ class SortItOut extends FlameGame with HasCollisionDetection {
           ..color = Colors.green
           ..style = PaintingStyle.fill,
       ),
-      PaperBin(
+      PlasticBin(
         label: 'Bin 1',
         position: Vector2(0, 1000),
         size: Vector2(200, 250),
@@ -61,30 +65,30 @@ class SortItOut extends FlameGame with HasCollisionDetection {
     world.add(
       ItemSpawner(
         components: [
-          PaperItem(
+          GlassItem(
             position: Vector2(size.x / 2, 0),
-            currentVelocity: Vector2(0, 100),
+            currentVelocity: Vector2(0, 300),
             paint: Paint()
               ..color = Colors.blue
               ..style = PaintingStyle.fill,
           ),
           PaperItem(
             position: Vector2(size.x / 2, 0),
-            currentVelocity: Vector2(0, 100),
+            currentVelocity: Vector2(0, 300),
             paint: Paint()
               ..color = Colors.green
               ..style = PaintingStyle.fill,
           ),
-          PaperItem(
+          PlasticItem(
             position: Vector2(size.x / 2, 0),
-            currentVelocity: Vector2(0, 100),
+            currentVelocity: Vector2(0, 300),
             paint: Paint()
               ..color = Colors.purple
               ..style = PaintingStyle.fill,
           )
         ],
-        minTimePeriod: 1,
-        maxTimePeriod: 3,
+        minTimePeriod: 0.5,
+        maxTimePeriod: 1,
       ),
     );
   }

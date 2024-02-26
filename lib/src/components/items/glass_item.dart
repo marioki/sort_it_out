@@ -1,9 +1,9 @@
 import 'package:flame/events.dart';
-import 'package:sort_it_out/src/components/bins/paper_bin.dart';
+import 'package:sort_it_out/src/components/bins/glass_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
-class PaperItem extends Item {
-  PaperItem({
+class GlassItem extends Item {
+  GlassItem({
     required super.currentVelocity,
     required super.position,
     required super.paint,
@@ -17,7 +17,7 @@ class PaperItem extends Item {
     if (!isColliding) {
       print('Not in bin');
     } else {
-      if (inCollisionWithType is PaperBin) {
+      if (inCollisionWithType is GlassBin) {
         print('Correct bin...Removing Item');
         removeFromParent();
       } else {
