@@ -1,11 +1,14 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+import 'package:sort_it_out/src/components/bin.dart';
 import 'package:sort_it_out/src/sort_it_out.dart';
 
 import '../../config.dart';
 
-class Item extends CircleComponent with DragCallbacks, HasGameReference<SortItOut> {
+class Item extends CircleComponent
+    with DragCallbacks, CollisionCallbacks, HasGameReference<SortItOut> {
   Item({
     required this.currentVelocity,
     required super.position,
@@ -14,13 +17,19 @@ class Item extends CircleComponent with DragCallbacks, HasGameReference<SortItOu
   }) : super(
           radius: itemSize,
           anchor: Anchor.center,
-          paint: paint
+          paint: paint,
         );
 
   Vector2 initialVelocity = Vector2.zero();
   Vector2 currentVelocity;
   late Vector2 positionWhenDragged = Vector2.zero();
   final double itemSize;
+
+  @override
+  Future<void> onLoad() {
+    add(CircleHitbox(isSolid: true));
+    return super.onLoad();
+  }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
@@ -33,7 +42,6 @@ class Item extends CircleComponent with DragCallbacks, HasGameReference<SortItOu
   void onDragStart(
     DragStartEvent event,
   ) {
-    // TODO: implement onDragStart
     super.onDragStart(event);
     positionWhenDragged = Vector2.copy(position);
     initialVelocity = currentVelocity;
@@ -45,11 +53,23 @@ class Item extends CircleComponent with DragCallbacks, HasGameReference<SortItOu
     currentVelocity = initialVelocity;
     position = positionWhenDragged;
     super.onDragEnd(event);
+    if (isColliding) {
+      print('Removing object');
+      removeFromParent();
+    }
   }
 
   @override
   void update(double dt) {
     super.update(dt);
     position += currentVelocity * dt;
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    if (other is Bin) {
+      print('Is on top of bin');
+    }
   }
 }
