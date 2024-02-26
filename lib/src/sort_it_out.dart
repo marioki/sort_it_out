@@ -64,32 +64,34 @@ class SortItOut extends FlameGame with HasCollisionDetection {
     ]);
     world.add(
       ItemSpawner(
-        components: [
-          GlassItem(
-            position: Vector2(size.x / 2, 0),
-            currentVelocity: Vector2(0, 300),
-            paint: Paint()
-              ..color = Colors.blue
-              ..style = PaintingStyle.fill,
-          ),
-          PaperItem(
-            position: Vector2(size.x / 2, 0),
-            currentVelocity: Vector2(0, 300),
-            paint: Paint()
-              ..color = Colors.green
-              ..style = PaintingStyle.fill,
-          ),
-          PlasticItem(
-            position: Vector2(size.x / 2, 0),
-            currentVelocity: Vector2(0, 300),
-            paint: Paint()
-              ..color = Colors.purple
-              ..style = PaintingStyle.fill,
-          )
-        ],
+        spawnFunctions: [plasticItemSpawn, glassItemSpawn, paperItemSpawn],
         minTimePeriod: 0.5,
         maxTimePeriod: 1,
       ),
     );
   }
 }
+
+Item plasticItemSpawn(Vector2 position) => PlasticItem(
+      position: position,
+      currentVelocity: Vector2(0, 300),
+      paint: Paint()
+        ..color = Colors.purple
+        ..style = PaintingStyle.fill,
+    );
+
+Item glassItemSpawn(Vector2 position) => GlassItem(
+      position: position,
+      currentVelocity: Vector2(0, 300),
+      paint: Paint()
+        ..color = Colors.blue
+        ..style = PaintingStyle.fill,
+    );
+
+Item paperItemSpawn(Vector2 position) => PaperItem(
+      position: position,
+      currentVelocity: Vector2(0, 300),
+      paint: Paint()
+        ..color = Colors.green
+        ..style = PaintingStyle.fill,
+    );

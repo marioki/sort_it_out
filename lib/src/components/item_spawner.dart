@@ -1,27 +1,26 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:math';
-
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
-import 'package:sort_it_out/config.dart';
+import 'package:flutter/material.dart';
 import 'package:sort_it_out/src/components/item.dart';
-import 'package:sort_it_out/src/components/items/paper_item.dart';
-
 import 'package:sort_it_out/src/sort_it_out.dart';
 
+import '../../config.dart';
+// Import your item subclasses
+
 class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
-  final List<Item> components;
   final double minTimePeriod;
   final double maxTimePeriod;
   late Timer _timer;
   late double timerDuration;
   final double minXPosition;
   final double maxXPosition;
+  // Registry of spawn functions
+  List<Item Function(Vector2)> spawnFunctions;
 
   ItemSpawner({
-    required this.components,
     required this.minTimePeriod,
     required this.maxTimePeriod,
+    required this.spawnFunctions,
     this.minXPosition = (gameWidth * 0.45),
     this.maxXPosition = (gameWidth * 0.55),
   }) : super() {
@@ -30,9 +29,7 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
     _timer = Timer(
       timerDuration,
       repeat: true,
-      onTick: () {
-        _spawnItem();
-      },
+      onTick: _spawnItem,
     );
 
     setTimerDuration();
@@ -51,14 +48,16 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
   }
 
   void _spawnItem() {
-    Item newItemData = components.random();
-    game.world.add(
-      PaperItem(
-        currentVelocity: newItemData.currentVelocity,
-        position: Vector2(Random().nextDouble() * (maxXPosition - minXPosition) + minXPosition, 0),
-        paint: newItemData.paint,
-      ),
-    );
+    // Select a spawn function at random
+    var spawnFunction = spawnFunctions[Random().nextInt(spawnFunctions.length)];
+
+    // Create a new item instance
+    Vector2 newPosition = Vector2(Random().nextDouble() * (maxXPosition - minXPosition) + minXPosition, 0);
+    Paint newPaint = Paint()..color = Colors.blue; // Example paint, adjust as needed
+
+    Item newItem = spawnFunction(newPosition);
+
+    game.world.add(newItem);
 
     setTimerDuration();
   }
