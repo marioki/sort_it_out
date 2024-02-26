@@ -2,12 +2,13 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
-import 'package:sort_it_out/src/components/bin.dart';
+import 'package:sort_it_out/src/components/bins/bin.dart';
+import 'package:sort_it_out/src/components/bins/paper_bin.dart';
 import 'package:sort_it_out/src/sort_it_out.dart';
 
 import '../../config.dart';
 
-class Item extends CircleComponent
+abstract class Item extends CircleComponent
     with DragCallbacks, CollisionCallbacks, HasGameReference<SortItOut> {
   Item({
     required this.currentVelocity,
@@ -24,6 +25,9 @@ class Item extends CircleComponent
   Vector2 currentVelocity;
   late Vector2 positionWhenDragged = Vector2.zero();
   final double itemSize;
+  PositionComponent? _inCollisionWithType;
+
+  PositionComponent? get inCollisionWithType => _inCollisionWithType;
 
   @override
   Future<void> onLoad() {
@@ -49,17 +53,6 @@ class Item extends CircleComponent
   }
 
   @override
-  void onDragEnd(DragEndEvent event) {
-    currentVelocity = initialVelocity;
-    position = positionWhenDragged;
-    super.onDragEnd(event);
-    if (isColliding) {
-      print('Removing object');
-      removeFromParent();
-    }
-  }
-
-  @override
   void update(double dt) {
     super.update(dt);
     position += currentVelocity * dt;
@@ -68,8 +61,7 @@ class Item extends CircleComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
-    if (other is Bin) {
-      print('Is on top of bin');
-    }
+    _inCollisionWithType = other;
+    print('COLLIDING WITH: $_inCollisionWithType');
   }
 }

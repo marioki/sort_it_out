@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:sort_it_out/config.dart';
 import 'package:sort_it_out/src/components/item.dart';
+import 'package:sort_it_out/src/components/items/paper_item.dart';
 
 import 'package:sort_it_out/src/sort_it_out.dart';
 
@@ -51,11 +52,13 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
 
   void _spawnItem() {
     Item newItemData = components.random();
-    game.world.add(Item(
-      currentVelocity: newItemData.currentVelocity,
-      position: Vector2(Random().nextDouble() * (maxXPosition - minXPosition) + minXPosition, 0),
-      paint: newItemData.paint,
-    ));
+    game.world.add(
+      PaperItem(
+        currentVelocity: newItemData.currentVelocity,
+        position: Vector2(Random().nextDouble() * (maxXPosition - minXPosition) + minXPosition, 0),
+        paint: newItemData.paint,
+      ),
+    );
 
     setTimerDuration();
   }

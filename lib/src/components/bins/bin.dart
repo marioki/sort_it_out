@@ -6,7 +6,7 @@ import 'package:flame/components.dart';
 
 import 'package:sort_it_out/src/sort_it_out.dart';
 
-class Bin extends RectangleComponent with CollisionCallbacks, HasGameReference<SortItOut> {
+abstract class Bin extends RectangleComponent with CollisionCallbacks, HasGameReference<SortItOut> {
   final String label;
   Bin({
     required this.label,
@@ -19,12 +19,5 @@ class Bin extends RectangleComponent with CollisionCallbacks, HasGameReference<S
   FutureOr<void> onLoad() {
     add(RectangleHitbox(isSolid: true));
     return super.onLoad();
-  }
-
-  @override
-  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
-    // TODO: implement onCollisionStart
-    super.onCollisionStart(intersectionPoints, other);
-    print('Collision with bin');
   }
 }
