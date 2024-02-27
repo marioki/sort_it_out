@@ -2,20 +2,19 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
-import 'package:sort_it_out/src/components/bins/bin.dart';
-import 'package:sort_it_out/src/components/bins/paper_bin.dart';
 import 'package:sort_it_out/src/sort_it_out.dart';
 
 import '../../config.dart';
 
 abstract class Item extends CircleComponent
     with DragCallbacks, CollisionCallbacks, HasGameReference<SortItOut> {
-  Item({
-    required this.currentVelocity,
-    required super.position,
-    required Paint paint,
-    this.itemSize = gameHeight * 0.035,
-  }) : super(
+  Item(
+      {required this.currentVelocity,
+      required super.position,
+      required Paint paint,
+      this.itemSize = gameHeight * 0.035,
+      required this.addScore})
+      : super(
           radius: itemSize,
           anchor: Anchor.center,
           paint: paint,
@@ -25,9 +24,11 @@ abstract class Item extends CircleComponent
   Vector2 currentVelocity;
   late Vector2 positionWhenDragged = Vector2.zero();
   final double itemSize;
-  PositionComponent? _inCollisionWithType;
 
+  PositionComponent? _inCollisionWithType;
   PositionComponent? get inCollisionWithType => _inCollisionWithType;
+
+  final void Function({int amount}) addScore;
 
   @override
   Future<void> onLoad() {

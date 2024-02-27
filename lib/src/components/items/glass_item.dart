@@ -7,6 +7,7 @@ class GlassItem extends Item {
     required super.currentVelocity,
     required super.position,
     required super.paint,
+    required super.addScore,
   });
 
   @override
@@ -19,6 +20,7 @@ class GlassItem extends Item {
     } else {
       if (inCollisionWithType is GlassBin) {
         print('Correct bin...Removing Item');
+        addScore();
         removeFromParent();
       } else {
         print('INCORRECT BIN! TRY AGAIN');

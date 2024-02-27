@@ -1,15 +1,23 @@
 name: sort_it_out
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flame: ^1.16.0
   flutter:
     sdk: flutter
+  google_fonts: ^6.1.0
+  nes_ui: ^0.16.0
+
+assets:
+  fonts:
+    - family: Press Start 2P
+      fonts:
+        - asset: assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf
 
 dev_dependencies:
   flutter_test:

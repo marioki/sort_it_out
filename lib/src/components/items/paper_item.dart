@@ -7,8 +7,8 @@ class PaperItem extends Item {
     required super.currentVelocity,
     required super.position,
     required super.paint,
+    required super.addScore,
   });
-
   @override
   void onDragEnd(DragEndEvent event) {
     currentVelocity = initialVelocity;
@@ -19,6 +19,7 @@ class PaperItem extends Item {
     } else {
       if (inCollisionWithType is PaperBin) {
         print('Correct bin...Removing Item');
+        addScore();
         removeFromParent();
       } else {
         print('INCORRECT BIN! TRY AGAIN');
