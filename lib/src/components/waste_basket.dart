@@ -27,14 +27,6 @@ class WasteBasket extends RectangleComponent with CollisionCallbacks, HasGameRef
   }
 
   @override
-  void update(double dt) {
-    if (lives <= 0) {
-//TODO: Lossing state;
-    }
-    super.update(dt);
-  }
-
-  @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     combinedItemCount += 1;
     minusOneLive();
@@ -57,8 +49,11 @@ class WasteBasket extends RectangleComponent with CollisionCallbacks, HasGameRef
   }
 
   void minusOneLive() {
-    if (lives > 0) {
+    if (lives > 1) {
       lives -= 1;
+    } else {
+      game.paused = true;
+      game.playState = PlayState.gameOver;
     }
     print('Lives Left: $lives');
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:sort_it_out/src/components/bins/glass_bin.dart';
@@ -13,12 +14,13 @@ import 'package:sort_it_out/src/components/items/plastic_item.dart';
 import 'package:sort_it_out/src/components/waste_basket.dart';
 
 import '../config.dart';
+import 'components/bins/bin.dart';
 import 'components/bins/paper_bin.dart';
 import 'components/components.dart';
 
 enum PlayState { welcome, playing, gameOver }
 
-class SortItOut extends FlameGame with HasCollisionDetection {
+class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   SortItOut()
       : super(
           camera: CameraComponent.withFixedResolution(
@@ -34,7 +36,9 @@ class SortItOut extends FlameGame with HasCollisionDetection {
 
   late PlayState _playState;
   PlayState get playState => _playState;
+
   set playState(PlayState playState) {
+    print('Swithing Play state to: $playState');
     _playState = playState;
     switch (playState) {
       case PlayState.welcome:
@@ -46,22 +50,12 @@ class SortItOut extends FlameGame with HasCollisionDetection {
     }
   }
 
-  void addScore({int amount = 1}) {
-    scoreNotifier.value += amount;
-    print('Points :${scoreNotifier.value}');
-  }
-
-  void resetScore() {
-    scoreNotifier.value = 0;
-  }
-
   @override
   FutureOr<void> onLoad() async {
     debugMode = false;
     super.onLoad();
-
+    playState = PlayState.welcome;
     camera.viewfinder.anchor = Anchor.topLeft;
-
     final textRenderer = TextPaint(
       style: const TextStyle(
         fontSize: 80,
@@ -83,6 +77,59 @@ class SortItOut extends FlameGame with HasCollisionDetection {
     });
 
     world.add(PlayArea());
+  }
+
+  Item plasticItemSpawn(Vector2 position) => PlasticItem(
+        position: position,
+        currentVelocity: Vector2(0, 300),
+        paint: Paint()
+          ..color = Colors.purple
+          ..style = PaintingStyle.fill,
+        addScore: addScore,
+      );
+
+  Item glassItemSpawn(Vector2 position) => GlassItem(
+        position: position,
+        currentVelocity: Vector2(0, 300),
+        paint: Paint()
+          ..color = Colors.blue
+          ..style = PaintingStyle.fill,
+        addScore: addScore,
+      );
+
+  Item paperItemSpawn(Vector2 position) => PaperItem(
+        position: position,
+        currentVelocity: Vector2(0, 300),
+        paint: Paint()
+          ..color = Colors.green
+          ..style = PaintingStyle.fill,
+        addScore: addScore,
+      );
+
+  void addScore({int amount = 1}) {
+    scoreNotifier.value += amount;
+    print('Points :${scoreNotifier.value}');
+  }
+
+  void resetScore() {
+    scoreNotifier.value = 0;
+  }
+
+  resetGame() {
+    world.removeAll(world.children.query<Item>());
+    world.removeAll(world.children.query<Bin>());
+    world.removeAll(world.children.query<WasteBasket>());
+
+    world.removeAll(world.children.query<ItemSpawner>());
+  }
+
+  void startGame() {
+    if (playState == PlayState.playing) return;
+    resetGame();
+    playState = PlayState.playing;
+    resetScore();
+    paused = false;
+
     world.addAll([
       GlassBin(
         label: 'Bin 1',
@@ -126,30 +173,9 @@ class SortItOut extends FlameGame with HasCollisionDetection {
     ));
   }
 
-  Item plasticItemSpawn(Vector2 position) => PlasticItem(
-        position: position,
-        currentVelocity: Vector2(0, 300),
-        paint: Paint()
-          ..color = Colors.purple
-          ..style = PaintingStyle.fill,
-        addScore: addScore,
-      );
-
-  Item glassItemSpawn(Vector2 position) => GlassItem(
-        position: position,
-        currentVelocity: Vector2(0, 300),
-        paint: Paint()
-          ..color = Colors.blue
-          ..style = PaintingStyle.fill,
-        addScore: addScore,
-      );
-
-  Item paperItemSpawn(Vector2 position) => PaperItem(
-        position: position,
-        currentVelocity: Vector2(0, 300),
-        paint: Paint()
-          ..color = Colors.green
-          ..style = PaintingStyle.fill,
-        addScore: addScore,
-      );
+  @override
+  void onTap() {
+    super.onTap();
+    startGame();
+  }
 }
