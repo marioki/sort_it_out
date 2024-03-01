@@ -9,11 +9,14 @@ import 'package:sort_it_out/src/components/item.dart';
 import 'package:sort_it_out/src/components/item_spawner.dart';
 import 'package:sort_it_out/src/components/items/glass_item.dart';
 import 'package:sort_it_out/src/components/items/paper_item.dart';
-import 'package:sort_it_out/src/components/items/plastic_bin.dart';
+import 'package:sort_it_out/src/components/items/plastic_item.dart';
+import 'package:sort_it_out/src/components/waste_basket.dart';
 
 import '../config.dart';
 import 'components/bins/paper_bin.dart';
 import 'components/components.dart';
+
+enum PlayState { welcome, playing, gameOver }
 
 class SortItOut extends FlameGame with HasCollisionDetection {
   SortItOut()
@@ -27,15 +30,27 @@ class SortItOut extends FlameGame with HasCollisionDetection {
   double get width => size.x;
   double get height => size.y;
   final scoreNotifier = ValueNotifier(0);
-  String scoreText = 'Score:';
+  String scoreText = 'Score:0';
 
-  /// Gives the player points, with a default value +1 points.
+  late PlayState _playState;
+  PlayState get playState => _playState;
+  set playState(PlayState playState) {
+    _playState = playState;
+    switch (playState) {
+      case PlayState.welcome:
+      case PlayState.gameOver:
+        overlays.add(playState.name);
+      case PlayState.playing:
+        overlays.remove(PlayState.welcome.name);
+        overlays.remove(PlayState.gameOver.name);
+    }
+  }
+
   void addScore({int amount = 1}) {
     scoreNotifier.value += amount;
     print('Points :${scoreNotifier.value}');
   }
 
-  /// Sets the player's score to 0 again.
   void resetScore() {
     scoreNotifier.value = 0;
   }
@@ -101,6 +116,14 @@ class SortItOut extends FlameGame with HasCollisionDetection {
         maxTimePeriod: 1,
       ),
     );
+
+    world.add(WasteBasket(
+      position: Vector2(0, size.y * 1.1),
+      size: Vector2(size.x, 100),
+      paint: Paint()
+        ..color = Colors.purple
+        ..style = PaintingStyle.fill,
+    ));
   }
 
   Item plasticItemSpawn(Vector2 position) => PlasticItem(

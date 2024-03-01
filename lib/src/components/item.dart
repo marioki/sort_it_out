@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+import 'package:sort_it_out/src/components/waste_basket.dart';
 import 'package:sort_it_out/src/sort_it_out.dart';
 
 import '../../config.dart';
@@ -57,10 +58,15 @@ abstract class Item extends CircleComponent
   void update(double dt) {
     super.update(dt);
     position += currentVelocity * dt;
-    if (position.y > game.height) {
+  }
+
+  @override
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is WasteBasket) {
       print('Deleting Object from memory');
       removeFromParent();
     }
+    super.onCollisionStart(intersectionPoints, other);
   }
 
   @override
