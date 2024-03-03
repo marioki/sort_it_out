@@ -8,12 +8,12 @@ import 'package:sort_it_out/src/sort_it_out.dart';
 import '../../config.dart';
 
 abstract class Item extends CircleComponent
-    with DragCallbacks, CollisionCallbacks, HasGameReference<SortItOut> {
+    with DragCallbacks, TapCallbacks, CollisionCallbacks, HasGameReference<SortItOut> {
   Item(
       {required this.currentVelocity,
       required super.position,
       required Paint paint,
-      this.itemSize = gameHeight * 0.035,
+      this.itemSize = gameHeight * 0.050,
       required this.addScore})
       : super(
           radius: itemSize,
@@ -42,6 +42,30 @@ abstract class Item extends CircleComponent
     super.onDragUpdate(event);
     position.x = (position.x + event.localDelta.x).clamp(width / 2, game.width - width / 2);
     position.y = (position.y + event.localDelta.y);
+  }
+
+  @override
+  void onTapDown(TapDownEvent event) {
+    print('Called on tap Down');
+
+    initialVelocity = currentVelocity;
+    currentVelocity = Vector2(0, 0);
+    super.onTapDown(event);
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    print('Called Tap UP');
+    currentVelocity = initialVelocity;
+    super.onTapUp(event);
+  }
+
+  @override
+  void onTapCancel(TapCancelEvent event) {
+    print('Called Tap Cancelled');
+    currentVelocity = initialVelocity;
+
+    super.onTapCancel(event);
   }
 
   @override

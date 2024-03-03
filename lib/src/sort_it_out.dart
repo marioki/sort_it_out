@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/debug.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/timer.dart';
 import 'package:flutter/material.dart';
 import 'package:sort_it_out/src/components/bins/glass_bin.dart';
 import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
@@ -27,13 +29,23 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
             width: gameWidth,
             height: gameHeight,
           ),
-        );
+        ) {
+    difficultyTimer = Timer(
+      5,
+      repeat: true,
+      autoStart: false,
+      onTick: () {
+        increaseGameDificulty();
+      },
+    );
+  }
 
   double get width => size.x;
   double get height => size.y;
   final scoreNotifier = ValueNotifier(0);
   String scoreText = 'Score:0';
-
+  late Timer difficultyTimer;
+  int dificultyLevelCounter = 0;
   late PlayState _playState;
   PlayState get playState => _playState;
 
@@ -52,7 +64,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
   @override
   FutureOr<void> onLoad() async {
-    debugMode = false;
+    debugMode = true;
     super.onLoad();
     playState = PlayState.welcome;
     camera.viewfinder.anchor = Anchor.topLeft;
@@ -79,27 +91,27 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     world.add(PlayArea());
   }
 
-  Item plasticItemSpawn(Vector2 position) => PlasticItem(
+  Item plasticItemSpawn(Vector2 position, Vector2 velocity) => PlasticItem(
         position: position,
-        currentVelocity: Vector2(0, 300),
+        currentVelocity: velocity,
         paint: Paint()
           ..color = Colors.purple
           ..style = PaintingStyle.fill,
         addScore: addScore,
       );
 
-  Item glassItemSpawn(Vector2 position) => GlassItem(
+  Item glassItemSpawn(Vector2 position, Vector2 velocity) => GlassItem(
         position: position,
-        currentVelocity: Vector2(0, 300),
+        currentVelocity: velocity,
         paint: Paint()
           ..color = Colors.blue
           ..style = PaintingStyle.fill,
         addScore: addScore,
       );
 
-  Item paperItemSpawn(Vector2 position) => PaperItem(
+  Item paperItemSpawn(Vector2 position, Vector2 velocity) => PaperItem(
         position: position,
-        currentVelocity: Vector2(0, 300),
+        currentVelocity: velocity,
         paint: Paint()
           ..color = Colors.green
           ..style = PaintingStyle.fill,
@@ -129,6 +141,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     playState = PlayState.playing;
     resetScore();
     paused = false;
+    difficultyTimer.start();
 
     world.addAll([
       GlassBin(
@@ -159,8 +172,8 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     world.add(
       ItemSpawner(
         spawnFunctions: [plasticItemSpawn, glassItemSpawn, paperItemSpawn],
-        minTimePeriod: 0.5,
-        maxTimePeriod: 1,
+        minTimePeriod: 2,
+        maxTimePeriod: 3,
       ),
     );
 
@@ -177,5 +190,18 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   void onTap() {
     super.onTap();
     startGame();
+  }
+
+  @override
+  void update(double dt) {
+    difficultyTimer.update(dt);
+    super.update(dt);
+  }
+
+  void increaseGameDificulty() {
+    dificultyLevelCounter += 1;
+
+    print('Increasing Game Dificulty to level $dificultyLevelCounter');
+    world.children.query<ItemSpawner>().first.increaseSpawnerDificulty();
   }
 }

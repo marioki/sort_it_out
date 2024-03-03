@@ -1,21 +1,30 @@
 import 'dart:math';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
+import 'package:flame/game.dart';
 import 'package:sort_it_out/src/components/item.dart';
 import 'package:sort_it_out/src/sort_it_out.dart';
 
 import '../../config.dart';
 // Import your item subclasses
+/**
+ * Dificulty Controls
+ * Dificulty increases with time
+ * Speed of the items increase
+ * Spawn Time interval range decreases
+ * Item variaty increases
+ */
 
 class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
-  final double minTimePeriod;
-  final double maxTimePeriod;
+  double minTimePeriod;
+  double maxTimePeriod;
+  double itemSpeedMultiplier = 1;
+
   late Timer _timer;
   late double timerDuration;
   final double minXPosition;
   final double maxXPosition;
-  // Registry of spawn functions
-  List<Item Function(Vector2)> spawnFunctions;
+
+  List<Item Function(Vector2, Vector2)> spawnFunctions;
 
   ItemSpawner({
     required this.minTimePeriod,
@@ -37,7 +46,7 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
 
   @override
   void update(double dt) {
-    _timer.update(dt); // This is crucial for the timer's progress and triggering onTick
+    _timer.update(dt);
     super.update(dt);
   }
 
@@ -48,15 +57,11 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
   }
 
   void _spawnItem() {
-    // Select a spawn function at random
     var spawnFunction = spawnFunctions[Random().nextInt(spawnFunctions.length)];
 
-    // Create a new item instance
-    Vector2 newPosition = Vector2(Random().nextDouble() * (maxXPosition - minXPosition) + minXPosition, 0);
-    Paint newPaint = Paint()..color = Colors.blue; // Example paint, adjust as needed
-
-    Item newItem = spawnFunction(newPosition);
-
+    Vector2 newPosition =
+        Vector2(Random().nextDouble() * (maxXPosition - minXPosition) + minXPosition, 0);
+    Item newItem = spawnFunction(newPosition, (Vector2(0, 300) * itemSpeedMultiplier));
     game.world.add(newItem);
 
     setTimerDuration();
@@ -69,5 +74,18 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
       ..stop()
       ..limit = timerDuration
       ..start();
+  }
+
+  increaseSpawnerDificulty() {
+    print('Increasing Item Spawner Dificulty.');
+
+    if (itemSpeedMultiplier <= 5) {
+      itemSpeedMultiplier += 0.05; //Increase speed by 10%
+    }
+    minTimePeriod = max(.1, minTimePeriod - 0.10);
+    maxTimePeriod = max(.3, maxTimePeriod - 0.10);
+
+    print('Min Time Period: $minTimePeriod');
+    print('Max Time Period: $maxTimePeriod');
   }
 }
