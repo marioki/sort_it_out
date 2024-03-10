@@ -10,9 +10,9 @@ import 'package:sort_it_out/src/components/bins/glass_bin.dart';
 import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 import 'package:sort_it_out/src/components/item_spawner.dart';
-import 'package:sort_it_out/src/components/items/glass_item.dart';
-import 'package:sort_it_out/src/components/items/paper_item.dart';
-import 'package:sort_it_out/src/components/items/plastic_item.dart';
+import 'package:sort_it_out/src/components/items/glass/glass_item.dart';
+import 'package:sort_it_out/src/components/items/paper/paper_item.dart';
+import 'package:sort_it_out/src/components/items/plastic/plastic_item.dart';
 import 'package:sort_it_out/src/components/waste_basket.dart';
 
 import '../config.dart';
@@ -100,7 +100,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     world.add(PlayArea());
   }
 
-  Item plasticItemSpawn(Vector2 position, Vector2 velocity) => PlasticItem(
+  Item plasticItemSpawn(Vector2 position, Vector2 velocity) => PlasticWaterBottleItem(
         position: position,
         currentVelocity: velocity,
         paint: Paint()
@@ -109,7 +109,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
         addScore: addScore,
       );
 
-  Item glassItemSpawn(Vector2 position, Vector2 velocity) => GlassItem(
+  Item glassItemSpawn(Vector2 position, Vector2 velocity) => WineGlassBottleItem(
         position: position,
         currentVelocity: velocity,
         paint: Paint()
@@ -118,7 +118,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
         addScore: addScore,
       );
 
-  Item paperItemSpawn(Vector2 position, Vector2 velocity) => PaperItem(
+  Item paperItemSpawn(Vector2 position, Vector2 velocity) => NewsPaperItem(
         position: position,
         currentVelocity: velocity,
         paint: Paint()

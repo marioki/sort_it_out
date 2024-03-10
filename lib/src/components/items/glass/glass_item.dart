@@ -2,8 +2,8 @@ import 'package:flame/events.dart';
 import 'package:sort_it_out/src/components/bins/glass_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
-class GlassItem extends Item {
-  GlassItem({
+class WineGlassBottleItem extends Item {
+  WineGlassBottleItem({
     required super.currentVelocity,
     required super.position,
     required super.paint,

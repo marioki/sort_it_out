@@ -4,11 +4,11 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
-import 'package:sort_it_out/src/components/items/paper_item.dart';
+import 'package:sort_it_out/src/components/items/paper/paper_item.dart';
 
 import '../sort_it_out.dart';
-import 'items/glass_item.dart';
-import 'items/plastic_item.dart';
+import 'items/glass/glass_item.dart';
+import 'items/plastic/plastic_item.dart';
 
 class WasteBasket extends RectangleComponent with CollisionCallbacks, HasGameReference<SortItOut> {
   int aluminiumItemCounter = 0;
@@ -32,15 +32,15 @@ class WasteBasket extends RectangleComponent with CollisionCallbacks, HasGameRef
     minusOneLive();
     print('Combined Item Counter: $combinedItemCount');
     switch (other) {
-      case PaperItem _:
+      case NewsPaperItem _:
         paperItemCounter += 1;
         print('Wasted Paper Counter: $paperItemCounter');
         break;
-      case GlassItem _:
+      case WineGlassBottleItem _:
         glassItemCounter += 1;
         print('Wasted Glass Counter: $glassItemCounter');
         break;
-      case PlasticItem _:
+      case PlasticWaterBottleItem _:
         plasticItemCounter += 1;
         print('Wasted Plastic Counter: $plasticItemCounter');
         break;

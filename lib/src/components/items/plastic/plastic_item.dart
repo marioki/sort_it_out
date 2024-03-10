@@ -1,10 +1,9 @@
 import 'package:flame/events.dart';
-import 'package:flame/sprite.dart';
-import 'package:sort_it_out/src/components/bins/paper_bin.dart';
+import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
-class PaperItem extends Item {
-  PaperItem({
+class PlasticWaterBottleItem extends Item {
+  PlasticWaterBottleItem({
     required super.currentVelocity,
     required super.position,
     required super.paint,
@@ -13,7 +12,8 @@ class PaperItem extends Item {
 
   @override
   Future<void> onLoad() {
-    sprite = game.paperSprite;
+    sprite = game.plasticSprite;
+
     return super.onLoad();
   }
 
@@ -23,10 +23,8 @@ class PaperItem extends Item {
     position = positionWhenDragged;
     super.onDragEnd(event);
     if (!isColliding) {
-      print('Not in bin');
     } else {
-      if (inCollisionWithType is PaperBin) {
-        print('Correct bin...Removing Item');
+      if (inCollisionWithType is PlasticBin) {
         addScore();
         removeFromParent();
       } else {
