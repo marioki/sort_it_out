@@ -1,4 +1,5 @@
 import 'package:flame/events.dart';
+import 'package:flame/sprite.dart';
 import 'package:sort_it_out/src/components/bins/paper_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
@@ -9,6 +10,13 @@ class PaperItem extends Item {
     required super.paint,
     required super.addScore,
   });
+
+  @override
+  Future<void> onLoad() {
+    sprite = game.paperSprite;
+    return super.onLoad();
+  }
+
   @override
   void onDragEnd(DragEndEvent event) {
     currentVelocity = initialVelocity;

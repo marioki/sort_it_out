@@ -11,6 +11,13 @@ class PlasticItem extends Item {
   });
 
   @override
+  Future<void> onLoad() {
+    sprite = game.plasticSprite;
+
+    return super.onLoad();
+  }
+
+  @override
   void onDragEnd(DragEndEvent event) {
     currentVelocity = initialVelocity;
     position = positionWhenDragged;

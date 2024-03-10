@@ -11,6 +11,12 @@ class GlassItem extends Item {
   });
 
   @override
+  Future<void> onLoad() {
+    sprite = game.glassSprite;
+    return super.onLoad();
+  }
+
+  @override
   void onDragEnd(DragEndEvent event) {
     currentVelocity = initialVelocity;
     position = positionWhenDragged;

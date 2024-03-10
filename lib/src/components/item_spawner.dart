@@ -79,11 +79,11 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
   increaseSpawnerDificulty() {
     print('Increasing Item Spawner Dificulty.');
 
-    if (itemSpeedMultiplier <= 5) {
-      itemSpeedMultiplier += 0.05; //Increase speed by 10%
+    if (itemSpeedMultiplier <= 2) {
+      itemSpeedMultiplier += 0.05;
     }
-    minTimePeriod = max(.1, minTimePeriod - 0.10);
-    maxTimePeriod = max(.3, maxTimePeriod - 0.10);
+    minTimePeriod = max(.2, (minTimePeriod - minTimePeriod * 0.10));
+    maxTimePeriod = max(.3, (maxTimePeriod - maxTimePeriod * 0.10));
 
     print('Min Time Period: $minTimePeriod');
     print('Max Time Period: $maxTimePeriod');

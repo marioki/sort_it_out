@@ -7,16 +7,15 @@ import 'package:sort_it_out/src/sort_it_out.dart';
 
 import '../../config.dart';
 
-abstract class Item extends CircleComponent
+abstract class Item extends SpriteComponent
     with DragCallbacks, TapCallbacks, CollisionCallbacks, HasGameReference<SortItOut> {
-  Item(
-      {required this.currentVelocity,
-      required super.position,
-      required Paint paint,
-      this.itemSize = gameHeight * 0.050,
-      required this.addScore})
-      : super(
-          radius: itemSize,
+  Item({
+    required this.currentVelocity,
+    required super.position,
+    required Paint paint,
+    required this.addScore,
+    this.itemSize = gameHeight * 0.070,
+  }) : super(
           anchor: Anchor.center,
           paint: paint,
         );
@@ -32,9 +31,11 @@ abstract class Item extends CircleComponent
   final void Function({int amount}) addScore;
 
   @override
-  Future<void> onLoad() {
-    add(CircleHitbox(isSolid: true));
-    return super.onLoad();
+  Future<void> onLoad() async {
+    add(RectangleHitbox.relative(Vector2(0.5, 1),
+        parentSize: Vector2(sprite!.image.width.toDouble(), sprite!.image.height.toDouble())));
+
+    
   }
 
   @override
@@ -51,13 +52,6 @@ abstract class Item extends CircleComponent
     initialVelocity = currentVelocity;
     currentVelocity = Vector2(0, 0);
     super.onTapDown(event);
-  }
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    print('Called Tap UP');
-    currentVelocity = initialVelocity;
-    super.onTapUp(event);
   }
 
   @override

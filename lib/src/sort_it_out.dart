@@ -48,6 +48,9 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   int dificultyLevelCounter = 0;
   late PlayState _playState;
   PlayState get playState => _playState;
+  late Sprite paperSprite;
+  late Sprite glassSprite;
+  late Sprite plasticSprite;
 
   set playState(PlayState playState) {
     print('Swithing Play state to: $playState');
@@ -64,6 +67,12 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
   @override
   FutureOr<void> onLoad() async {
+    plasticSprite = await loadSprite('/items/plastic_1.png',
+        srcPosition: Vector2(120, 10), srcSize: Vector2(80, 270));
+
+    paperSprite = await loadSprite('/items/paper_1.png',
+        srcPosition: Vector2(24, 24), srcSize: Vector2(170, 150));
+
     debugMode = true;
     super.onLoad();
     playState = PlayState.welcome;
@@ -171,7 +180,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     ]);
     world.add(
       ItemSpawner(
-        spawnFunctions: [plasticItemSpawn, glassItemSpawn, paperItemSpawn],
+        spawnFunctions: [plasticItemSpawn, paperItemSpawn],
         minTimePeriod: 2,
         maxTimePeriod: 3,
       ),
