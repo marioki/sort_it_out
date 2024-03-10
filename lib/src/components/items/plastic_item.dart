@@ -23,10 +23,8 @@ class PlasticItem extends Item {
     position = positionWhenDragged;
     super.onDragEnd(event);
     if (!isColliding) {
-      print('Not in bin');
     } else {
       if (inCollisionWithType is PlasticBin) {
-        print('Correct bin...Removing Item');
         addScore();
         removeFromParent();
       } else {
