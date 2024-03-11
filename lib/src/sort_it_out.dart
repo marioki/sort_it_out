@@ -75,7 +75,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
   @override
   FutureOr<void> onLoad() async {
-    debugMode = false;
+    debugMode = true;
 
     //Audio
     await FlameAudio.audioCache.loadAll([
@@ -91,8 +91,8 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
     plasticSprite = await loadSprite(
       'items/plastic/plastic_1.png',
-      srcPosition: Vector2(120, 10),
-      srcSize: Vector2(80, 270),
+      srcPosition: Vector2(100, 10),
+      srcSize: Vector2(110, 270),
     );
     paperSprite = await loadSprite(
       'items/paper/paper_1.png',
@@ -204,17 +204,17 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       GlassBin(
         label: 'Bin 1',
         position: Vector2(0, 150),
-        size: Vector2(300, 420),
+        size: Vector2(250, 350),
       ),
       PaperBin(
         label: 'Bin 1',
         position: Vector2(0, 650),
-        size: Vector2(300, 420) * 1.1,
+        size: Vector2(250, 350),
       ),
       PlasticBin(
         label: 'Bin 1',
         position: Vector2(0, 1150),
-        size: Vector2(265, 370) * 1.2,
+        size: Vector2(250, 350),
       ),
     ]);
     world.add(
