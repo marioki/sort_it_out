@@ -6,12 +6,11 @@ import 'package:flame/components.dart';
 
 import 'package:sort_it_out/src/sort_it_out.dart';
 
-abstract class Bin extends RectangleComponent with CollisionCallbacks, HasGameReference<SortItOut> {
+abstract class Bin extends SpriteComponent with CollisionCallbacks, HasGameReference<SortItOut> {
   final String label;
   Bin({
     required this.label,
     required super.position,
-    required super.paint,
     required super.size,
   }) : super();
 

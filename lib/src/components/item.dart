@@ -1,7 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flutter/material.dart';
 import 'package:sort_it_out/src/components/waste_basket.dart';
 import 'package:sort_it_out/src/sort_it_out.dart';
 
@@ -10,11 +9,9 @@ abstract class Item extends SpriteComponent
   Item({
     required this.currentVelocity,
     required super.position,
-    required Paint paint,
     required this.addScore,
   }) : super(
           anchor: Anchor.center,
-          paint: paint,
         );
 
   Vector2 initialVelocity = Vector2.zero();

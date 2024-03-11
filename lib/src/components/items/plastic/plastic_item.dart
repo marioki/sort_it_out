@@ -6,7 +6,6 @@ class PlasticWaterBottleItem extends Item {
   PlasticWaterBottleItem({
     required super.currentVelocity,
     required super.position,
-    required super.paint,
     required super.addScore,
   });
 

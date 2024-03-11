@@ -30,8 +30,8 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
     required this.minTimePeriod,
     required this.maxTimePeriod,
     required this.spawnFunctions,
-    this.minXPosition = (gameWidth * 0.45),
-    this.maxXPosition = (gameWidth * 0.55),
+    this.minXPosition = (gameWidth * 0.55),
+    this.maxXPosition = (gameWidth * 0.70),
   }) : super() {
     timerDuration = minTimePeriod;
 

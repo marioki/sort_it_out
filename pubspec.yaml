@@ -26,6 +26,8 @@ flutter:
     - assets/images/items/paper/paper_1.png
     - assets/images/items/plastic/plastic_1.png
     - assets/images/items/glass/
+    - assets/images/bins/
+
 
   fonts:
     - family: Press Start 2P

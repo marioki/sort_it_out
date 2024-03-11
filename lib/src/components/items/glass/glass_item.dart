@@ -6,7 +6,6 @@ class WineGlassBottleItem extends Item {
   WineGlassBottleItem({
     required super.currentVelocity,
     required super.position,
-    required super.paint,
     required super.addScore,
   });
 

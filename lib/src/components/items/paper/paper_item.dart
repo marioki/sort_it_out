@@ -1,5 +1,4 @@
 import 'package:flame/events.dart';
-import 'package:flame/sprite.dart';
 import 'package:sort_it_out/src/components/bins/paper_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
@@ -7,7 +6,6 @@ class NewsPaperItem extends Item {
   NewsPaperItem({
     required super.currentVelocity,
     required super.position,
-    required super.paint,
     required super.addScore,
   });
 

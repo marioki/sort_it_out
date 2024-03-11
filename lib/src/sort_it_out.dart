@@ -48,9 +48,16 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   int dificultyLevelCounter = 0;
   late PlayState _playState;
   PlayState get playState => _playState;
+  //Sprites
+  //items
   late Sprite paperSprite;
   late Sprite glassSprite;
   late Sprite plasticSprite;
+  //bins
+  late Sprite plasticBin;
+  late Sprite paperBin;
+  late Sprite glassBin;
+  late Sprite aluminiumBin;
 
   set playState(PlayState playState) {
     print('Swithing Play state to: $playState');
@@ -67,25 +74,49 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
   @override
   FutureOr<void> onLoad() async {
+    debugMode = false;
+
     plasticSprite = await loadSprite(
-      '/items/plastic_1.png',
+      'items/plastic/plastic_1.png',
       srcPosition: Vector2(120, 10),
       srcSize: Vector2(80, 270),
     );
-
     paperSprite = await loadSprite(
-      '/items/paper_1.png',
+      'items/paper/paper_1.png',
       srcPosition: Vector2(24, 24),
       srcSize: Vector2(170, 150),
     );
-
     glassSprite = await loadSprite(
       'items/glass/glass_bottle_1.png',
       srcPosition: Vector2(0, 0),
       srcSize: Vector2(90, 300),
     );
 
-    debugMode = false;
+    //BINS
+
+    paperBin = await loadSprite(
+      'bins/blue_bin.png',
+      srcPosition: Vector2(0, 0),
+      srcSize: Vector2(580, 725),
+    );
+
+    glassBin = await loadSprite(
+      'bins/green_bin.png',
+      srcPosition: Vector2(0, 0),
+      srcSize: Vector2(580, 740),
+    );
+    plasticBin = await loadSprite(
+      'bins/plastic_bin.png',
+      srcPosition: Vector2(0, 0),
+      srcSize: Vector2(1100, 1500),
+    );
+
+    aluminiumBin = await loadSprite(
+      'bins/grey_bin.png',
+      srcPosition: Vector2(0, 0),
+      srcSize: Vector2(580, 720),
+    );
+
     super.onLoad();
     playState = PlayState.welcome;
     camera.viewfinder.anchor = Anchor.topLeft;
@@ -115,27 +146,18 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   Item plasticItemSpawn(Vector2 position, Vector2 velocity) => PlasticWaterBottleItem(
         position: position,
         currentVelocity: velocity,
-        paint: Paint()
-          ..color = Colors.purple
-          ..style = PaintingStyle.fill,
         addScore: addScore,
       );
 
   Item glassItemSpawn(Vector2 position, Vector2 velocity) => WineGlassBottleItem(
         position: position,
         currentVelocity: velocity,
-        paint: Paint()
-          ..color = Colors.blue
-          ..style = PaintingStyle.fill,
         addScore: addScore,
       );
 
   Item paperItemSpawn(Vector2 position, Vector2 velocity) => NewsPaperItem(
         position: position,
         currentVelocity: velocity,
-        paint: Paint()
-          ..color = Colors.green
-          ..style = PaintingStyle.fill,
         addScore: addScore,
       );
 
@@ -152,7 +174,6 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     world.removeAll(world.children.query<Item>());
     world.removeAll(world.children.query<Bin>());
     world.removeAll(world.children.query<WasteBasket>());
-
     world.removeAll(world.children.query<ItemSpawner>());
   }
 
@@ -167,27 +188,18 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     world.addAll([
       GlassBin(
         label: 'Bin 1',
-        position: Vector2(0, 400),
-        size: Vector2(200, 250),
-        paint: Paint()
-          ..color = Colors.blue
-          ..style = PaintingStyle.fill,
+        position: Vector2(0, 150),
+        size: Vector2(300, 420),
       ),
       PaperBin(
         label: 'Bin 1',
-        position: Vector2(0, 800),
-        size: Vector2(200, 250),
-        paint: Paint()
-          ..color = Colors.green
-          ..style = PaintingStyle.fill,
+        position: Vector2(0, 650),
+        size: Vector2(300, 420)* 1.1,
       ),
       PlasticBin(
         label: 'Bin 1',
-        position: Vector2(0, 1200),
-        size: Vector2(200, 250),
-        paint: Paint()
-          ..color = Colors.purple
-          ..style = PaintingStyle.fill,
+        position: Vector2(0, 1150),
+        size: Vector2(265, 370) * 1.2,
       ),
     ]);
     world.add(
