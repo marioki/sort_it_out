@@ -67,13 +67,25 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
   @override
   FutureOr<void> onLoad() async {
-    plasticSprite = await loadSprite('/items/plastic_1.png',
-        srcPosition: Vector2(120, 10), srcSize: Vector2(80, 270));
+    plasticSprite = await loadSprite(
+      '/items/plastic_1.png',
+      srcPosition: Vector2(120, 10),
+      srcSize: Vector2(80, 270),
+    );
 
-    paperSprite = await loadSprite('/items/paper_1.png',
-        srcPosition: Vector2(24, 24), srcSize: Vector2(170, 150));
+    paperSprite = await loadSprite(
+      '/items/paper_1.png',
+      srcPosition: Vector2(24, 24),
+      srcSize: Vector2(170, 150),
+    );
 
-    debugMode = true;
+    glassSprite = await loadSprite(
+      'items/glass/glass_bottle_1.png',
+      srcPosition: Vector2(0, 0),
+      srcSize: Vector2(90, 300),
+    );
+
+    debugMode = false;
     super.onLoad();
     playState = PlayState.welcome;
     camera.viewfinder.anchor = Anchor.topLeft;
@@ -180,7 +192,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     ]);
     world.add(
       ItemSpawner(
-        spawnFunctions: [plasticItemSpawn, paperItemSpawn],
+        spawnFunctions: [glassItemSpawn, paperItemSpawn, plasticItemSpawn],
         minTimePeriod: 2,
         maxTimePeriod: 3,
       ),
