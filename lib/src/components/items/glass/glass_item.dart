@@ -35,6 +35,7 @@ class WineGlassBottleItem extends Item {
         FlameAudio.play('plus_one.wav');
         removeFromParent();
       } else {
+        FlameAudio.play('wrong.wav');
         print('INCORRECT BIN! TRY AGAIN');
       }
     }
