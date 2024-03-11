@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   flame: ^1.16.0
+  flame_audio: ^2.10.0
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.0
@@ -27,6 +28,7 @@ flutter:
     - assets/images/items/plastic/plastic_1.png
     - assets/images/items/glass/
     - assets/images/bins/
+    - assets/audio/
 
 
   fonts:

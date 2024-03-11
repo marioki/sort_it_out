@@ -1,4 +1,5 @@
 import 'package:flame/events.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:sort_it_out/src/components/bins/paper_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
@@ -16,6 +17,12 @@ class NewsPaperItem extends Item {
   }
 
   @override
+  void onTapDown(TapDownEvent event) {
+    FlameAudio.play('paper.wav');
+    super.onTapDown(event);
+  }
+
+  @override
   void onDragEnd(DragEndEvent event) {
     currentVelocity = initialVelocity;
     position = positionWhenDragged;
@@ -24,8 +31,8 @@ class NewsPaperItem extends Item {
       print('Not in bin');
     } else {
       if (inCollisionWithType is PaperBin) {
-        print('Correct bin...Removing Item');
         addScore();
+        FlameAudio.play('plus_one.wav');
         removeFromParent();
       } else {
         print('INCORRECT BIN! TRY AGAIN');

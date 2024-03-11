@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 
 import 'package:sort_it_out/src/components/items/paper/paper_item.dart';
 
@@ -30,6 +31,9 @@ class WasteBasket extends RectangleComponent with CollisionCallbacks, HasGameRef
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     combinedItemCount += 1;
     minusOneLive();
+
+    FlameAudio.play('wrong.wav');
+
     print('Combined Item Counter: $combinedItemCount');
     switch (other) {
       case NewsPaperItem _:
@@ -52,6 +56,8 @@ class WasteBasket extends RectangleComponent with CollisionCallbacks, HasGameRef
     if (lives > 1) {
       lives -= 1;
     } else {
+      FlameAudio.play('game_over.wav');
+
       game.paused = true;
       game.playState = PlayState.gameOver;
     }

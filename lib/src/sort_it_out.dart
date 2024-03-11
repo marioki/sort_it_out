@@ -5,6 +5,7 @@ import 'package:flame/debug.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/timer.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:sort_it_out/src/components/bins/glass_bin.dart';
 import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
@@ -75,6 +76,18 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   @override
   FutureOr<void> onLoad() async {
     debugMode = false;
+
+    //Audio
+    await FlameAudio.audioCache.loadAll([
+      'soda_can.wav',
+      'plus_one.wav',
+      'plastic_bottle.wav',
+      'paper.wav',
+      'glass_bottle.wav',
+      'game_start.wav',
+      'game_over.wav', 
+      'wrong.wav'
+    ]);
 
     plasticSprite = await loadSprite(
       'items/plastic/plastic_1.png',
@@ -181,6 +194,8 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     if (playState == PlayState.playing) return;
     resetGame();
     playState = PlayState.playing;
+    FlameAudio.play('game_start.wav');
+
     resetScore();
     paused = false;
     difficultyTimer.start();
@@ -194,7 +209,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       PaperBin(
         label: 'Bin 1',
         position: Vector2(0, 650),
-        size: Vector2(300, 420)* 1.1,
+        size: Vector2(300, 420) * 1.1,
       ),
       PlasticBin(
         label: 'Bin 1',
