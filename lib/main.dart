@@ -11,7 +11,6 @@ void main() {
     overlayBuilderMap: {
       PlayState.welcome.name: (context, game) => const OverlayScreen(
             title: 'TAP TO PLAY',
-            subtitle: 'Use arrow keys or swipe',
           ),
       PlayState.gameOver.name: (context, game) => const OverlayScreen(
             title: 'G A M E   O V E R',

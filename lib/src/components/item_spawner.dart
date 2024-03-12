@@ -1,11 +1,10 @@
 import 'dart:math';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
-import 'package:sort_it_out/src/components/item.dart';
+import 'package:sort_it_out/src/components/items/item.dart';
 import 'package:sort_it_out/src/sort_it_out.dart';
 
 import '../../config.dart';
-// Import your item subclasses
 /**
  * Dificulty Controls
  * Dificulty increases with time
@@ -30,8 +29,8 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
     required this.minTimePeriod,
     required this.maxTimePeriod,
     required this.spawnFunctions,
-    this.minXPosition = (gameWidth * 0.55),
-    this.maxXPosition = (gameWidth * 0.70),
+    this.minXPosition = (gameWidth * 0.40),
+    this.maxXPosition = (gameWidth * 0.60),
   }) : super() {
     timerDuration = minTimePeriod;
 
@@ -77,15 +76,16 @@ class ItemSpawner extends PositionComponent with HasGameReference<SortItOut> {
   }
 
   increaseSpawnerDificulty() {
-    print('Increasing Item Spawner Dificulty.');
+    print('[Dificulty] Increasing Item Spawner Dificulty.');
 
-    if (itemSpeedMultiplier <= 2) {
-      itemSpeedMultiplier += 0.05;
+    if (itemSpeedMultiplier <= 1.8) {
+      itemSpeedMultiplier += 0.03;
     }
-    minTimePeriod = max(.4, (minTimePeriod - minTimePeriod * 0.10));
-    maxTimePeriod = max(.5, (maxTimePeriod - maxTimePeriod * 0.10));
+    minTimePeriod = max(.7, (minTimePeriod - minTimePeriod * 0.10));
+    maxTimePeriod = max(.8, (maxTimePeriod - maxTimePeriod * 0.10));
 
-    print('Min Time Period: $minTimePeriod');
-    print('Max Time Period: $maxTimePeriod');
+    print('[Dificulty] Min Time Period: $minTimePeriod');
+    print('[Dificulty] Max Time Period: $maxTimePeriod');
+    print('[Dificulty] Item Speed Multiplier: $itemSpeedMultiplier');
   }
 }

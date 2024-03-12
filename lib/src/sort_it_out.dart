@@ -11,7 +11,7 @@ import 'package:sort_it_out/src/components/bins/aluminium_bin.dart';
 import 'package:sort_it_out/src/components/bins/color_glass.dart';
 import 'package:sort_it_out/src/components/bins/glass_bin.dart';
 import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
-import 'package:sort_it_out/src/components/item.dart';
+import 'package:sort_it_out/src/components/items/item.dart';
 import 'package:sort_it_out/src/components/item_spawner.dart';
 import 'package:sort_it_out/src/components/items/aluminium/aluminium_item.dart';
 import 'package:sort_it_out/src/components/items/glass/glass_item.dart';
@@ -25,6 +25,7 @@ import 'components/bins/bin.dart';
 import 'components/bins/hdpe_bin.dart';
 import 'components/bins/paper_bin.dart';
 import 'components/components.dart';
+import 'components/items/glass/color_glass.dart';
 import 'sprite_manager.dart';
 
 enum PlayState { welcome, playing, gameOver }
@@ -82,7 +83,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
   @override
   FutureOr<void> onLoad() async {
-    debugMode = true;
+    debugMode = false;
 
     //Audio
     await FlameAudio.audioCache.loadAll([
@@ -165,7 +166,13 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
         addScore: addScore,
       );
 
-  Item glassItemSpawn(Vector2 position, Vector2 velocity) => ClearGlassBottle(
+  Item clearGlassItemSpawner(Vector2 position, Vector2 velocity) => ClearGlassBottle(
+        position: position,
+        currentVelocity: velocity,
+        addScore: addScore,
+      );
+
+  Item colorGlassItemSpawner(Vector2 position, Vector2 velocity) => ColorGlassBottle(
         position: position,
         currentVelocity: velocity,
         addScore: addScore,
@@ -215,32 +222,32 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
     world.addAll([
       GlassBin(
-        label: 'Bin 1',
+        label: 'Clear Glass',
         position: Vector2(0, 150),
         size: Vector2(250, 350),
       ),
       PaperBin(
-        label: 'Bin 1',
+        label: 'Paper',
         position: Vector2(0, 650),
         size: Vector2(270, 350),
       ),
       PlasticBin(
-        label: 'Bin 1',
+        label: 'PET Plastic',
         position: Vector2(0, 1150),
         size: Vector2(250, 350),
       ),
       AluminiumBin(
-        label: 'Bin 1',
+        label: 'Aluminum',
         position: Vector2(570, 650),
         size: Vector2(250, 350),
       ),
       HDPEBin(
-        label: 'Bin 1',
+        label: 'HDPE Plastic',
         position: Vector2(570, 1150),
         size: Vector2(250, 350),
       ),
       ColorGlassBin(
-        label: 'Bin 1',
+        label: 'Color Glass',
         position: Vector2(570, 150),
         size: Vector2(250, 350),
       ),
@@ -248,11 +255,12 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     world.add(
       ItemSpawner(
         spawnFunctions: [
-          glassItemSpawn,
+          clearGlassItemSpawner,
           paperItemSpawn,
           plasticItemSpawn,
+          hdpePlasticItemSpawner,
+          colorGlassItemSpawner,
           aluminiumItemSpawn,
-          hdpePlasticItemSpawner
         ],
         minTimePeriod: 2,
         maxTimePeriod: 3,

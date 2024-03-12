@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:sort_it_out/src/components/bins/paper_bin.dart';
-import 'package:sort_it_out/src/components/item.dart';
+import 'package:sort_it_out/src/components/items/item.dart';
 
 class NewsPaperItem extends Item {
   NewsPaperItem({

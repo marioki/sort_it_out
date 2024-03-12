@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
+import 'package:sort_it_out/src/components/bins/color_glass.dart';
 import 'package:sort_it_out/src/components/items/item.dart';
 
-class PlasticWaterBottleItem extends Item {
-  PlasticWaterBottleItem({
+class ColorGlassBottle extends Item {
+  ColorGlassBottle({
     required super.currentVelocity,
     required super.position,
     required super.addScore,
@@ -15,13 +15,13 @@ class PlasticWaterBottleItem extends Item {
   @override
   Future<void> onLoad() {
     sprite = game.spriteManager
-        .petPlasticSprites[Random().nextInt(game.spriteManager.petPlasticSprites.length)];
+        .colorGlassSprites[Random().nextInt(game.spriteManager.colorGlassSprites.length)];
     return super.onLoad();
   }
 
   @override
   void onTapDown(TapDownEvent event) {
-    FlameAudio.play('plastic_bottle.wav');
+    FlameAudio.play('glass_bottle.wav');
     super.onTapDown(event);
   }
 
@@ -31,14 +31,14 @@ class PlasticWaterBottleItem extends Item {
     position = positionWhenDragged;
     super.onDragEnd(event);
     if (!isColliding) {
+      print('Not in bin');
     } else {
-      if (inCollisionWithType is PlasticBin) {
+      if (inCollisionWithType is ColorGlassBin) {
         addScore();
         FlameAudio.play('plus_one.wav');
         removeFromParent();
       } else {
         FlameAudio.play('wrong.wav');
-
         print('INCORRECT BIN! TRY AGAIN');
       }
     }
