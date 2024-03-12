@@ -1,25 +1,25 @@
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:sort_it_out/src/components/bins/aluminium_bin.dart';
+import 'package:sort_it_out/src/components/bins/hdpe_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
-class AluminiumCan extends Item {
-  AluminiumCan({
+class HDPEItem extends Item {
+  HDPEItem({
     required super.currentVelocity,
     required super.position,
     required super.addScore,
-    super.size,
+    super.size
   });
 
   @override
   Future<void> onLoad() {
-    sprite = game.aluminiumSprite;
+    sprite = game.hdpePlasticSprite1;
     return super.onLoad();
   }
 
   @override
   void onTapDown(TapDownEvent event) {
-    FlameAudio.play('can.wav');
+    FlameAudio.play('plastic_bottle.wav');
     super.onTapDown(event);
   }
 
@@ -29,14 +29,14 @@ class AluminiumCan extends Item {
     position = positionWhenDragged;
     super.onDragEnd(event);
     if (!isColliding) {
-      print('Not in bin');
     } else {
-      if (inCollisionWithType is AluminiumBin) {
+      if (inCollisionWithType is HDPEBin) {
         addScore();
         FlameAudio.play('plus_one.wav');
         removeFromParent();
       } else {
         FlameAudio.play('wrong.wav');
+
         print('INCORRECT BIN! TRY AGAIN');
       }
     }

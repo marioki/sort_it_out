@@ -24,8 +24,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/items/paper/paper_1.png
-    - assets/images/items/plastic/plastic_1.png
+    - assets/images/items/paper/
+    - assets/images/items/plastic/
     - assets/images/items/glass/
     - assets/images/items/aluminium/
 

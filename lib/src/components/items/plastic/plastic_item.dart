@@ -12,7 +12,7 @@ class PlasticWaterBottleItem extends Item {
 
   @override
   Future<void> onLoad() {
-    sprite = game.plasticSprite;
+    sprite = game.petPlasticSprite1;
     return super.onLoad();
   }
 

@@ -8,6 +8,7 @@ import 'package:flame/timer.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:sort_it_out/src/components/bins/aluminium_bin.dart';
+import 'package:sort_it_out/src/components/bins/color_glass.dart';
 import 'package:sort_it_out/src/components/bins/glass_bin.dart';
 import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
@@ -15,11 +16,13 @@ import 'package:sort_it_out/src/components/item_spawner.dart';
 import 'package:sort_it_out/src/components/items/aluminium/aluminium_item.dart';
 import 'package:sort_it_out/src/components/items/glass/glass_item.dart';
 import 'package:sort_it_out/src/components/items/paper/paper_item.dart';
+import 'package:sort_it_out/src/components/items/plastic/hdpe_item.dart';
 import 'package:sort_it_out/src/components/items/plastic/plastic_item.dart';
 import 'package:sort_it_out/src/components/waste_basket.dart';
 
 import '../config.dart';
 import 'components/bins/bin.dart';
+import 'components/bins/hdpe_bin.dart';
 import 'components/bins/paper_bin.dart';
 import 'components/components.dart';
 
@@ -55,7 +58,9 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   //items
   late Sprite paperSprite;
   late Sprite glassSprite;
-  late Sprite plasticSprite;
+  late Sprite petPlasticSprite1;
+  late Sprite hdpePlasticSprite1;
+
   late Sprite aluminiumSprite;
 
   //bins
@@ -63,6 +68,8 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   late Sprite paperBin;
   late Sprite glassBin;
   late Sprite aluminiumBin;
+  late Sprite hdpeBin;
+  late Sprite colorGlassBin;
 
   set playState(PlayState playState) {
     print('Swithing Play state to: $playState');
@@ -93,11 +100,17 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       'can.wav'
     ]);
 
-    plasticSprite = await loadSprite(
+    petPlasticSprite1 = await loadSprite(
       'items/plastic/plastic_1.png',
       srcPosition: Vector2(100, 10),
       srcSize: Vector2(110, 270),
     );
+    hdpePlasticSprite1 = await loadSprite(
+      'items/plastic/pet_plastics.png',
+      srcPosition: Vector2(480, 55),
+      srcSize: Vector2(300, 450),
+    );
+
     paperSprite = await loadSprite(
       'items/paper/paper_1.png',
       srcPosition: Vector2(24, 24),
@@ -116,28 +129,38 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     );
 
     //BINS
+    glassBin = await loadSprite(
+      'bins/green_bin.png',
+      srcPosition: Vector2(0, 0),
+      srcSize: Vector2(580, 740),
+    );
+    colorGlassBin = await loadSprite(
+      'bins/brown_bin.png',
+      srcPosition: Vector2(0, 0),
+      srcSize: Vector2(560, 710),
+    );
 
     paperBin = await loadSprite(
       'bins/blue_bin.png',
       srcPosition: Vector2(0, 0),
       srcSize: Vector2(580, 725),
     );
-
-    glassBin = await loadSprite(
-      'bins/green_bin.png',
+    aluminiumBin = await loadSprite(
+      'bins/grey_bin.png',
       srcPosition: Vector2(0, 0),
-      srcSize: Vector2(580, 740),
+      srcSize: Vector2(580, 750),
     );
+
     plasticBin = await loadSprite(
       'bins/plastic_bin.png',
       srcPosition: Vector2(0, 0),
       srcSize: Vector2(1100, 1500),
     );
 
-    aluminiumBin = await loadSprite(
-      'bins/grey_bin.png',
+    hdpeBin = await loadSprite(
+      'bins/red_bin.png',
       srcPosition: Vector2(0, 0),
-      srcSize: Vector2(580, 720),
+      srcSize: Vector2(580, 710),
     );
 
     super.onLoad();
@@ -188,6 +211,14 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
         position: position,
         currentVelocity: velocity,
         addScore: addScore,
+        size: Vector2(120,200)
+      );
+
+  Item hdpePlasticItemSpawner(Vector2 position, Vector2 velocity) => HDPEItem(
+        position: position,
+        currentVelocity: velocity,
+        addScore: addScore,
+        size: Vector2(175,250),
       );
 
   void addScore({int amount = 1}) {
@@ -225,7 +256,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       PaperBin(
         label: 'Bin 1',
         position: Vector2(0, 650),
-        size: Vector2(250, 350),
+        size: Vector2(270, 350),
       ),
       PlasticBin(
         label: 'Bin 1',
@@ -234,20 +265,36 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       ),
       AluminiumBin(
         label: 'Bin 1',
+        position: Vector2(570, 650),
+        size: Vector2(250, 350),
+      ),
+      HDPEBin(
+        label: 'Bin 1',
         position: Vector2(570, 1150),
+        size: Vector2(250, 350),
+      ),
+      ColorGlassBin(
+        label: 'Bin 1',
+        position: Vector2(570, 150),
         size: Vector2(250, 350),
       ),
     ]);
     world.add(
       ItemSpawner(
-        spawnFunctions: [glassItemSpawn, paperItemSpawn, plasticItemSpawn, aluminiumItemSpawn],
+        spawnFunctions: [
+          glassItemSpawn,
+          paperItemSpawn,
+          plasticItemSpawn,
+          aluminiumItemSpawn,
+          hdpePlasticItemSpawner
+        ],
         minTimePeriod: 2,
         maxTimePeriod: 3,
       ),
     );
 
     world.add(WasteBasket(
-      position: Vector2(0, size.y * 1.1),
+      position: Vector2(0, size.y * 1.15),
       size: Vector2(size.x, 100),
       paint: Paint()
         ..color = Colors.purple

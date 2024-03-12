@@ -6,11 +6,8 @@ import 'package:sort_it_out/src/sort_it_out.dart';
 
 abstract class Item extends SpriteComponent
     with DragCallbacks, TapCallbacks, CollisionCallbacks, HasGameReference<SortItOut> {
-  Item({
-    required this.currentVelocity,
-    required super.position,
-    required this.addScore,
-  }) : super(
+  Item({required this.currentVelocity, required super.position, required this.addScore, super.size})
+      : super(
           anchor: Anchor.center,
         );
 
@@ -28,10 +25,7 @@ abstract class Item extends SpriteComponent
     add(
       RectangleHitbox.relative(
         Vector2(1, 1),
-        parentSize: Vector2(
-          sprite!.src.width.toDouble(),
-          sprite!.src.height.toDouble(),
-        ),
+        parentSize: Vector2(size.x, size.y),
       ),
     );
   }
