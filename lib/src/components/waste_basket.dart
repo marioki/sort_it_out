@@ -55,7 +55,10 @@ class WasteBasket extends RectangleComponent with CollisionCallbacks, HasGameRef
   void minusOneLive() {
     if (lives > 1) {
       lives -= 1;
+      game.decreaseLife();
     } else {
+      game.decreaseLife();
+
       FlameAudio.play('game_over.wav');
 
       game.paused = true;

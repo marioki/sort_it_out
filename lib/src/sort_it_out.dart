@@ -51,6 +51,8 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   double get width => size.x;
   double get height => size.y;
   final scoreNotifier = ValueNotifier(0);
+  final livesNotifier = ValueNotifier<int>(5); // Assuming starting with 5 lives
+
   String scoreText = 'Score:0';
   late Timer difficultyTimer;
   int dificultyLevelCounter = 0;
@@ -85,6 +87,48 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   FutureOr<void> onLoad() async {
     debugMode = false;
 
+    camera.viewfinder.anchor = Anchor.topLeft;
+
+    final textRenderer = TextPaint(
+      style: const TextStyle(
+        fontSize: 80,
+        color: Colors.white,
+        fontFamily: 'Press Start 2P',
+      ),
+    );
+
+    final scoreComponent = TextComponent(
+      text: scoreText,
+      position: Vector2.all(30),
+      textRenderer: textRenderer,
+    );
+
+    camera.viewport.add(scoreComponent);
+
+    scoreNotifier.addListener(() {
+      scoreComponent.text = 'Score: ${scoreNotifier.value}';
+    });
+
+    // Lives display
+    final livesTextRenderer = TextPaint(
+      style: const TextStyle(
+        fontSize: 32,
+        color: Colors.white,
+        fontFamily: 'Press Start 2P',
+      ),
+    );
+
+    final livesComponent = TextComponent(
+      text: 'Lives: ${livesNotifier.value}',
+      position: Vector2(30, 150),
+      textRenderer: livesTextRenderer,
+    );
+
+    livesNotifier.addListener(() {
+      livesComponent.text = 'Lives: ${livesNotifier.value}';
+    });
+
+    camera.viewport.add(livesComponent);
     //Audio
     await FlameAudio.audioCache.loadAll([
       'plus_one.wav',
@@ -136,26 +180,6 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
 
     super.onLoad();
     playState = PlayState.welcome;
-    camera.viewfinder.anchor = Anchor.topLeft;
-    final textRenderer = TextPaint(
-      style: const TextStyle(
-        fontSize: 80,
-        color: Colors.white,
-        fontFamily: 'Press Start 2P',
-      ),
-    );
-
-    final scoreComponent = TextComponent(
-      text: scoreText,
-      position: Vector2.all(30),
-      textRenderer: textRenderer,
-    );
-
-    camera.viewport.add(scoreComponent);
-
-    scoreNotifier.addListener(() {
-      scoreComponent.text = 'Score: ${scoreNotifier.value}';
-    });
 
     world.add(PlayArea());
   }
@@ -203,6 +227,17 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     scoreNotifier.value = 0;
   }
 
+  void decreaseLife() {
+    livesNotifier.value--;
+    if (livesNotifier.value <= 0) {
+      playState = PlayState.gameOver;
+    }
+  }
+
+  void resetLives() {
+    livesNotifier.value = 5;
+  }
+
   resetGame() {
     world.removeAll(world.children.query<Item>());
     world.removeAll(world.children.query<Bin>());
@@ -213,6 +248,8 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   void startGame() {
     if (playState == PlayState.playing) return;
     resetGame();
+    resetLives();
+
     playState = PlayState.playing;
     FlameAudio.play('game_start.wav');
 
@@ -223,12 +260,12 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
     world.addAll([
       GlassBin(
         label: 'Clear Glass',
-        position: Vector2(0, 150),
+        position: Vector2(0, 250),
         size: Vector2(250, 350),
       ),
       PaperBin(
         label: 'Paper',
-        position: Vector2(0, 650),
+        position: Vector2(0, 700),
         size: Vector2(270, 350),
       ),
       PlasticBin(
@@ -238,7 +275,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       ),
       AluminiumBin(
         label: 'Aluminum',
-        position: Vector2(570, 650),
+        position: Vector2(570, 700),
         size: Vector2(250, 350),
       ),
       HDPEBin(
@@ -248,7 +285,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       ),
       ColorGlassBin(
         label: 'Color Glass',
-        position: Vector2(570, 150),
+        position: Vector2(570, 250),
         size: Vector2(250, 350),
       ),
     ]);
