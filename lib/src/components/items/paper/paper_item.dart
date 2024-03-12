@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:sort_it_out/src/components/bins/paper_bin.dart';
@@ -12,8 +14,8 @@ class NewsPaperItem extends Item {
 
   @override
   Future<void> onLoad() {
-    sprite = game.paperSprite;
-    return super.onLoad();
+sprite = game.spriteManager
+        .paperSprites[Random().nextInt(game.spriteManager.paperSprites.length)];    return super.onLoad();
   }
 
   @override

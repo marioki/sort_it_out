@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:sort_it_out/src/components/bins/plastic_bin.dart';
@@ -12,7 +14,8 @@ class PlasticWaterBottleItem extends Item {
 
   @override
   Future<void> onLoad() {
-    sprite = game.petPlasticSprite1;
+    sprite = game.spriteManager
+        .petPlasticSprites[Random().nextInt(game.spriteManager.petPlasticSprites.length)];
     return super.onLoad();
   }
 

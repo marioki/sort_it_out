@@ -1,10 +1,12 @@
+import 'dart:math';
+
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:sort_it_out/src/components/bins/glass_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
-class WineGlassBottleItem extends Item {
-  WineGlassBottleItem({
+class ClearGlassBottle extends Item {
+  ClearGlassBottle({
     required super.currentVelocity,
     required super.position,
     required super.addScore,
@@ -12,7 +14,8 @@ class WineGlassBottleItem extends Item {
 
   @override
   Future<void> onLoad() {
-    sprite = game.glassSprite;
+    sprite = game.spriteManager
+        .clearGlassSprites[Random().nextInt(game.spriteManager.clearGlassSprites.length)];
     return super.onLoad();
   }
 

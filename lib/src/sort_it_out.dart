@@ -25,6 +25,7 @@ import 'components/bins/bin.dart';
 import 'components/bins/hdpe_bin.dart';
 import 'components/bins/paper_bin.dart';
 import 'components/components.dart';
+import 'sprite_manager.dart';
 
 enum PlayState { welcome, playing, gameOver }
 
@@ -56,12 +57,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
   PlayState get playState => _playState;
   //Sprites
   //items
-  late Sprite paperSprite;
-  late Sprite glassSprite;
-  late Sprite petPlasticSprite1;
-  late Sprite hdpePlasticSprite1;
-
-  late Sprite aluminiumSprite;
+  SpriteManager spriteManager = SpriteManager();
 
   //bins
   late Sprite plasticBin;
@@ -100,33 +96,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       'can.wav'
     ]);
 
-    petPlasticSprite1 = await loadSprite(
-      'items/plastic/plastic_1.png',
-      srcPosition: Vector2(100, 10),
-      srcSize: Vector2(110, 270),
-    );
-    hdpePlasticSprite1 = await loadSprite(
-      'items/plastic/pet_plastics.png',
-      srcPosition: Vector2(480, 55),
-      srcSize: Vector2(300, 450),
-    );
-
-    paperSprite = await loadSprite(
-      'items/paper/paper_1.png',
-      srcPosition: Vector2(24, 24),
-      srcSize: Vector2(170, 150),
-    );
-    glassSprite = await loadSprite(
-      'items/glass/glass_bottle_1.png',
-      srcPosition: Vector2(0, 0),
-      srcSize: Vector2(90, 300),
-    );
-
-    aluminiumSprite = await loadSprite(
-      'items/aluminium/aluminium_1.png',
-      srcPosition: Vector2(0, 0),
-      srcSize: Vector2(150, 300),
-    );
+    spriteManager.loadSprites(this);
 
     //BINS
     glassBin = await loadSprite(
@@ -195,7 +165,7 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
         addScore: addScore,
       );
 
-  Item glassItemSpawn(Vector2 position, Vector2 velocity) => WineGlassBottleItem(
+  Item glassItemSpawn(Vector2 position, Vector2 velocity) => ClearGlassBottle(
         position: position,
         currentVelocity: velocity,
         addScore: addScore,
@@ -208,17 +178,13 @@ class SortItOut extends FlameGame with HasCollisionDetection, TapDetector {
       );
 
   Item aluminiumItemSpawn(Vector2 position, Vector2 velocity) => AluminiumCan(
-        position: position,
-        currentVelocity: velocity,
-        addScore: addScore,
-        size: Vector2(120,200)
-      );
+      position: position, currentVelocity: velocity, addScore: addScore, size: Vector2(120, 200));
 
   Item hdpePlasticItemSpawner(Vector2 position, Vector2 velocity) => HDPEItem(
         position: position,
         currentVelocity: velocity,
         addScore: addScore,
-        size: Vector2(175,250),
+        size: Vector2(175, 250),
       );
 
   void addScore({int amount = 1}) {

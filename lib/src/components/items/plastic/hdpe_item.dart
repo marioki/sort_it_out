@@ -1,19 +1,21 @@
+import 'dart:math';
+
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:sort_it_out/src/components/bins/hdpe_bin.dart';
 import 'package:sort_it_out/src/components/item.dart';
 
 class HDPEItem extends Item {
-  HDPEItem({
-    required super.currentVelocity,
-    required super.position,
-    required super.addScore,
-    super.size
-  });
+  HDPEItem(
+      {required super.currentVelocity,
+      required super.position,
+      required super.addScore,
+      super.size});
 
   @override
   Future<void> onLoad() {
-    sprite = game.hdpePlasticSprite1;
+    sprite = game.spriteManager
+        .hdpePlasticSprites[Random().nextInt(game.spriteManager.hdpePlasticSprites.length)];
     return super.onLoad();
   }
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/events.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:sort_it_out/src/components/bins/aluminium_bin.dart';
@@ -13,7 +15,8 @@ class AluminiumCan extends Item {
 
   @override
   Future<void> onLoad() {
-    sprite = game.aluminiumSprite;
+    sprite = game.spriteManager
+        .sodaCansSprites[Random().nextInt(game.spriteManager.sodaCansSprites.length)];
     return super.onLoad();
   }
 

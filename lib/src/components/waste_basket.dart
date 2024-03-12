@@ -40,7 +40,7 @@ class WasteBasket extends RectangleComponent with CollisionCallbacks, HasGameRef
         paperItemCounter += 1;
         print('Wasted Paper Counter: $paperItemCounter');
         break;
-      case WineGlassBottleItem _:
+      case ClearGlassBottle _:
         glassItemCounter += 1;
         print('Wasted Glass Counter: $glassItemCounter');
         break;
